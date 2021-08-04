@@ -64,9 +64,9 @@ func FloatFromPool() *big.Float {
 
 func DecimalFromPool() *Decimal {
 	decimal := decimalPool.Get().(*Decimal)
-	if decimal.Fl == nil {
-		decimal.Fl = FloatFromPool()
-	}
+	//if decimal.Fl == nil {
+	decimal.Fl = FloatFromPool()
+	//}
 	return decimal
 }
 
