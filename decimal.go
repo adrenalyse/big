@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"sync"
 )
 
 var (
@@ -31,6 +32,19 @@ var (
 // Decimal is the main exported type. It is a simple, immutable wrapper around a *big.Float
 type Decimal struct {
 	Fl *big.Float
+}
+
+var decimalPool = sync.Pool{
+	New: func() interface{} {
+		return &Decimal{}
+	},
+}
+
+func (d *Decimal) ReturnToPool() {
+	if d != nil && d.Fl != nil {
+		d.Fl.SetFloat64(0)
+		decimalPool.Put(d)
+	}
 }
 
 // NewDecimal creates a new Decimal type from a float value.
