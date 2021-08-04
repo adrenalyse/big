@@ -44,7 +44,7 @@ func TestNewDecimal(t *testing.T) {
 	t.Run("NaN", func(t *testing.T) {
 		d := NewDecimal(math.NaN())
 
-		assert.Nil(t, d.fl)
+		assert.Nil(t, d.Fl)
 	})
 }
 

@@ -30,7 +30,7 @@ var (
 
 // Decimal is the main exported type. It is a simple, immutable wrapper around a *big.Float
 type Decimal struct {
-	fl *big.Float
+	Fl *big.Float
 }
 
 // NewDecimal creates a new Decimal type from a float value.
@@ -49,7 +49,7 @@ func NewDecimal(val float64) Decimal {
 	fl = big.NewFloat(val)
 
 	return Decimal{
-		fl: fl,
+		Fl: fl,
 	}
 }
 
@@ -109,28 +109,28 @@ func MinSlice(decimals ...Decimal) Decimal {
 // Add adds a decimal instance to another Decimal instance.
 func (d Decimal) Add(addend Decimal) Decimal {
 	return nanGuard(func() Decimal {
-		return Decimal{d.cpy().Add(d.fl, addend.fl)}
+		return Decimal{d.cpy().Add(d.Fl, addend.Fl)}
 	}, d, addend)
 }
 
 // Sub subtracts another decimal instance from this Decimal instance.
 func (d Decimal) Sub(subtrahend Decimal) Decimal {
 	return nanGuard(func() Decimal {
-		return Decimal{d.cpy().Sub(d.fl, subtrahend.fl)}
+		return Decimal{d.cpy().Sub(d.Fl, subtrahend.Fl)}
 	}, d, subtrahend)
 }
 
 // Mul multiplies another decimal instance with this Decimal instance.
 func (d Decimal) Mul(factor Decimal) Decimal {
 	return nanGuard(func() Decimal {
-		return Decimal{d.cpy().Mul(d.fl, factor.fl)}
+		return Decimal{d.cpy().Mul(d.Fl, factor.Fl)}
 	}, d, factor)
 }
 
 // Div divides this Decimal by the denominator passed.
 func (d Decimal) Div(denominator Decimal) Decimal {
 	return nanGuard(func() Decimal {
-		return Decimal{d.cpy().Quo(d.fl, denominator.fl)}
+		return Decimal{d.cpy().Quo(d.Fl, denominator.Fl)}
 	}, d, denominator)
 }
 
@@ -235,7 +235,7 @@ func (d Decimal) Cmp(other Decimal) int {
 		return 0
 	}
 
-	return d.fl.Cmp(other.fl)
+	return d.Fl.Cmp(other.Fl)
 }
 
 // Float will return this Decimal as a float value.
@@ -245,7 +245,7 @@ func (d Decimal) Float() float64 {
 		return math.NaN()
 	}
 
-	f, _ := d.fl.Float64()
+	f, _ := d.Fl.Float64()
 	return f
 }
 
@@ -257,7 +257,7 @@ func (d Decimal) Zero() bool {
 
 // NaN returns true if the underlying is not a valid number
 func (d Decimal) NaN() bool {
-	return d.fl == nil
+	return d.Fl == nil
 }
 
 // IsZero will return true if this Decimal is equal to 0.
@@ -266,7 +266,7 @@ func (d Decimal) IsZero() bool {
 		return false
 	}
 
-	return d.fl == nil || d.fl.Cmp(&flZero) == 0
+	return d.Fl == nil || d.Fl.Cmp(&flZero) == 0
 }
 
 func (d Decimal) String() string {
@@ -274,11 +274,11 @@ func (d Decimal) String() string {
 		return "NaN"
 	}
 
-	if d.fl == nil {
-		d.fl = new(big.Float)
+	if d.Fl == nil {
+		d.Fl = new(big.Float)
 	}
 
-	return d.fl.String()
+	return d.Fl.String()
 }
 
 // FormattedString returns the string value of the number to the requested precision
@@ -298,20 +298,20 @@ func (d Decimal) MarshalJSON() ([]byte, error) {
 		return []byte("\"" + d.String() + "\""), nil
 	}
 
-	return d.fl.MarshalText()
+	return d.Fl.MarshalText()
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface
 func (d *Decimal) UnmarshalJSON(b []byte) error {
-	if d.fl == nil {
-		d.fl = big.NewFloat(0)
+	if d.Fl == nil {
+		d.Fl = big.NewFloat(0)
 	}
 
 	if isQuoted(b) {
 		b = b[1 : len(b)-1]
 	}
 
-	return d.fl.UnmarshalText(b)
+	return d.Fl.UnmarshalText(b)
 }
 
 func isQuoted(b []byte) bool {
@@ -338,7 +338,7 @@ func (d *Decimal) Scan(src interface{}) error {
 
 func (d Decimal) cpy() *big.Float {
 	cpy := new(big.Float)
-	return cpy.Copy(d.fl)
+	return cpy.Copy(d.Fl)
 }
 
 func anyNan(decimals ...Decimal) bool {
