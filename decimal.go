@@ -42,7 +42,7 @@ var bigFloatPool = sync.Pool{
 
 var decimalPool = sync.Pool{
 	New: func() interface{} {
-		return &Decimal{Fl: FloatFromPool()} //&Decimal{Fl: new(big.Float)}
+		return &Decimal{} //&Decimal{Fl: new(big.Float)}
 	},
 }
 
@@ -70,7 +70,7 @@ func FloatFromPool() *big.Float {
 func DecimalFromPool() *Decimal {
 	decimal := decimalPool.Get().(*Decimal)
 	//if decimal.Fl == nil {
-	//decimal.Fl = FloatFromPool()
+	decimal.Fl = FloatFromPool()
 	//}
 	return decimal
 }
