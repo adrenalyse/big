@@ -36,7 +36,7 @@ type Decimal struct {
 
 var decimalPool = sync.Pool{
 	New: func() interface{} {
-		return &Decimal{}
+		return &Decimal{Fl: new(big.Float)}
 	},
 }
 
