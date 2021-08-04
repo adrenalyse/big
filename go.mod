@@ -1,4 +1,4 @@
-module github.com/sdcoffey/big
+module github.com/adrenalyse/big
 
 go 1.13
 
