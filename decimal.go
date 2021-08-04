@@ -47,6 +47,10 @@ func (d *Decimal) ReturnToPool() {
 	}
 }
 
+func DecimalFromPool() *Decimal {
+	return decimalPool.Get().(*Decimal)
+}
+
 // NewDecimal creates a new Decimal type from a float value.
 func NewDecimal(val float64) Decimal {
 	var fl *big.Float
