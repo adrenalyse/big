@@ -53,7 +53,7 @@ func (d *Decimal) ReturnToPool() {
 		*fl = big.Float{}
 		bigFloatPool.Put(fl)
 
-		*d = Decimal{Fl: fl}
+		*d = Decimal{}
 		decimalPool.Put(d)
 	}
 }
