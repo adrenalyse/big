@@ -34,17 +34,32 @@ type Decimal struct {
 	Fl *big.Float
 }
 
+var bigFloatPool = sync.Pool{
+	New: func() interface{} {
+		return &big.Float{}
+	},
+}
+
 var decimalPool = sync.Pool{
 	New: func() interface{} {
-		return &Decimal{Fl: new(big.Float)}
+		return &Decimal{} //&Decimal{Fl: new(big.Float)}
 	},
 }
 
 func (d *Decimal) ReturnToPool() {
 	if d != nil && d.Fl != nil {
-		d.Fl.SetFloat64(0)
+		//d.Fl.SetFloat64(0)
+		fl := d.Fl
+		*fl = big.Float{}
+		bigFloatPool.Put(fl)
+
+		*d = Decimal{Fl: fl}
 		decimalPool.Put(d)
 	}
+}
+
+func FloatFromPool() *big.Float {
+	return bigFloatPool.Get().(*big.Float)
 }
 
 func DecimalFromPool() *Decimal {
