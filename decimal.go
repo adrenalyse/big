@@ -42,18 +42,23 @@ var bigFloatPool = sync.Pool{
 
 var decimalPool = sync.Pool{
 	New: func() interface{} {
-		return &Decimal{} // &Decimal{Fl: new(big.Float)}
+		return &Decimal{} //&Decimal{Fl: new(big.Float)}
 	},
 }
 
 func (d *Decimal) ReturnToPool() {
 	if d != nil {
+		//d.Fl.SetFloat64(0)
 		if d.Fl != nil {
-			*d.Fl = big.Float{}
-			bigFloatPool.Put(d.Fl)
+			fl := d.Fl
+			*fl = big.Float{}
+			bigFloatPool.Put(fl)
+
+			*d = Decimal{Fl: fl}
+		} else {
+			*d = Decimal{Fl: FloatFromPool()}
 		}
 
-		*d = Decimal{}
 		decimalPool.Put(d)
 	}
 }
@@ -63,7 +68,11 @@ func FloatFromPool() *big.Float {
 }
 
 func DecimalFromPool() *Decimal {
-	return decimalPool.Get().(*Decimal)
+	decimal := decimalPool.Get().(*Decimal)
+	if decimal.Fl == nil {
+		decimal.Fl = FloatFromPool()
+	}
+	return decimal
 }
 
 // NewDecimal creates a new Decimal type from a float value.
