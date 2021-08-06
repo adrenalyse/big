@@ -66,10 +66,7 @@ func FloatFromPool() *big.Float {
 }
 
 func DecimalFromPool() *Decimal {
-	decimal := decimalPool.Get().(*Decimal)
-	decimal.Fl = FloatFromPool()
-
-	return decimal
+	return decimalPool.Get().(*Decimal)
 }
 
 // NewDecimal creates a new Decimal type from a float value.
