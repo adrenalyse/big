@@ -19,18 +19,7 @@ type booleanExample struct {
 }
 
 func TestPool(t *testing.T) {
-	for i := 0; i < 1000; i++ {
-		decimal := DecimalFromPool()
-		t.Log(decimal.Fl.Float64())
-		decimal.Fl.SetFloat64(1.0)
-		assert.EqualValues(t, "1", decimal.Fl.String())
-		decimal.ReturnToPool()
-
-		decimal2 := DecimalFromPool()
-		decimal2.Fl.SetFloat64(2.0)
-		assert.EqualValues(t, "2", decimal2.Fl.String())
-		decimal2.ReturnToPool()
-	}
+	// TODO
 }
 
 func validateEqExamples(t *testing.T, examples ...equalExample) {
