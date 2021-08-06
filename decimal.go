@@ -52,8 +52,6 @@ func FloatFromPool() *big.Float {
 }
 
 func DecimalFromPool() Decimal {
-	// decimal.Fl = FloatFromPool() // CRITICAL
-
 	return Decimal{Fl: FloatFromPool()}
 }
 
