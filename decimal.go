@@ -42,8 +42,9 @@ var bigFloatPool = sync.Pool{
 
 func (d Decimal) ReturnToPool() {
 	if d.Fl != nil {
-		*d.Fl = big.Float{}
-		bigFloatPool.Put(d.Fl)
+		fl := d.Fl
+		*fl = big.Float{}
+		bigFloatPool.Put(fl)
 	}
 }
 
